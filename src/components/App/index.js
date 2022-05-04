@@ -30,10 +30,10 @@ function App(){
       <UserContext.Provider value={{userInfo, setUserInfo} } >
         <Routes>
           <Route path='/'           element={ <SignIn /> } />
-          <Route path='/sign-up'    element={ <SignUp /> } /> 
+          <Route path='/signup'    element={ <SignUp /> } /> 
           <Route path='/statements' element={ <Statements /> } />               
-          <Route path='/cash-in'    element={ <Statement /> } />  
-          <Route path='/cash-out'   element={ <Statement /> } />  
+          <Route path='/cashin'    element={ <Statement /> } />  
+          <Route path='/cashout'   element={ <Statement /> } />  
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>
