@@ -6,7 +6,8 @@ import UserContext from './../../contexts/UserContext';
 import SignIn     from './../SignIn';
 import SignUp     from './../SignUp';
 import Statements from './../Statements';
-import Statement  from './../Statement';
+import CashIn     from './../CashIn';
+import CashOut    from './../CashOut';
 
 function App(){ 
 
@@ -30,10 +31,10 @@ function App(){
       <UserContext.Provider value={{userInfo, setUserInfo} } >
         <Routes>
           <Route path='/'           element={ <SignIn /> } />
-          <Route path='/signup'    element={ <SignUp /> } /> 
+          <Route path='/signup'     element={ <SignUp /> } /> 
           <Route path='/statements' element={ <Statements /> } />               
-          <Route path='/cashin'    element={ <Statement /> } />  
-          <Route path='/cashout'   element={ <Statement /> } />  
+          <Route path='/cashin'     element={ <CashIn /> } />  
+          <Route path='/cashout'    element={ <CashOut /> } />  
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>

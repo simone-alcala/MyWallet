@@ -18,6 +18,8 @@ function SignIn(){
     const promise = axios.post(URL, { email: user.email, password: user.password });
     
     promise.then((promise) => {
+      localStorage.setItem('tokenMyWalletSimone',promise.data.token);
+      localStorage.setItem('nameMyWalletSimone' ,promise.data.name );
       setUserInfo ({ 
         token: promise.data.token, 
         name:  promise.data.name });
