@@ -1,14 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import React,{ useState,useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
 import UserContext  from '../../contexts/UserContext';
 
-function CashIn (){
+function CashInOut (){
+
+  const {type} = useParams();
 
   const {userInfo} = useContext(UserContext);
-  const [statement, setStatement] = useState({description: '', value: '', type: 'I'});
+  const [statement, setStatement] = useState({description: '', value: '', type: type});
 
   const navigate = useNavigate();
 
@@ -48,18 +50,18 @@ function CashIn (){
   return(
 
     <Container>
-
-      <Header>Nova entrada</Header>
+      
+      <Header>Nova {type === 'I' ? 'entrada' : 'saída'}</Header>
 
       <Form onSubmit={sendData}>
 
-        <Input type='text' placeholder='Valor' required value={statement.value} 
+        <Input type='text' maxLength={8} placeholder='Valor' required value={statement.value} 
           onChange={e => setStatement ({...statement, value: validateNumber(e.target.value) })} />
 
         <Input type='text' maxLength={26} placeholder='Descrição' required value={statement.description} 
           onChange={e => setStatement ({...statement, description: e.target.value })} />
 
-        <Button type='submit'>Salvar entrada</Button>
+        <Button type='submit'>Salvar {type === 'I' ? 'entrada' : 'saída'}</Button>
 
       </Form>
 
@@ -113,4 +115,4 @@ const Input = styled.input`
   margin-bottom: 13px;
 `
 
-export default CashIn;
+export default CashInOut;

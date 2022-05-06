@@ -11,9 +11,14 @@ function Statements(){
   const {userInfo, setUserInfo} = useContext(UserContext);
   const [statements, setStatements] = useState([]);
   const [balance, setBalance] = useState(0);
+  const [idDeleted, setIdDeleted] = useState('');
 
   const navigate = useNavigate();
   
+  const getIdDeleted = (value) => {
+    setIdDeleted(value);
+  }
+
   const logout = () => {
       localStorage.setItem('tokenMyWalletSimone','');
       localStorage.setItem('nameMyWalletSimone' ,'' );
@@ -28,6 +33,7 @@ function Statements(){
     const URLBASE = 'http://localhost:5000'
     const CONFIG =  { headers: { Token: userInfo.token } };
     const promise = axios.get(`${URLBASE}/statement`, CONFIG);
+    
     
     promise.then((promise) => {
       setStatements([...promise.data]);
@@ -49,32 +55,34 @@ function Statements(){
       console.log(err)
     });
 
-  } , userInfo);
+  } , [userInfo,idDeleted]);
 
   return(
     <Container>
 
       <Header>
-        Olá, {userInfo.name} 
+        Olá, {userInfo.name}
         <ion-icon name="log-out-outline" onClick={logout} ></ion-icon>
       </Header>
-      
-      <Section>
-        {statements.length === 0 ? 
-        
-        <Span>Não há registros de entrada ou saída</Span> : 
-        
-        statements.map(({_id,description,value,type,date}) => 
-          <Statement _id={_id} description={description} value={value} type={type} date={date}/>
-        )}
-      </Section>
 
-      { statements.length > 0 && 
-        <Balance><strong>SALDO</strong>{balance.toFixed(2).replace('.',',')}</Balance> }
-      
+      {statements.length === 0 ?       
+        
+        <NoStatement> <Span>Não há registros de <br/> entrada ou saída</Span> </NoStatement> :
+        <>
+          <Section>
+            {statements.map(({_id, description, value, type, date}) =>
+            <Statement _id={_id} description={description} value={value} type={type} date={date} getIdDeleted={getIdDeleted}/> )}
+          </Section>
+          <Balance><strong>SALDO</strong>{balance.toFixed(2).replace('.', ',')}</Balance>
+        </> 
+      }  
       <Footer>
-        <Link to={'/cashin'}> <Button>Nova entrada</Button></Link>
-        <Link to={'/cashout'}><Button>Nova saída  </Button></Link>
+        <Link to={'/cashinout/I'}> 
+          <Button><ion-icon name="add-circle-outline"></ion-icon><span>Nova <br/>entrada</span></Button>
+        </Link>
+        <Link to={'/cashinout/O'}> 
+          <Button><ion-icon name="remove-circle-outline"></ion-icon><span>Nova <br/>saída</span></Button>
+        </Link>
       </Footer>
     </Container>
   );
@@ -99,7 +107,8 @@ const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  text-transform: capitalize;
+  
   ion-icon{
     cursor: pointer;
   }
@@ -159,12 +168,40 @@ const Button = styled.button`
   font-size: 17px;
   font-weight: 700;
   cursor: pointer;
+  position: relative;
+
+  span{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    text-align: left;
+  }
+
+  ion-icon{
+    --ionicon-stroke-width: 60px;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+`
+
+const NoStatement = styled.section`
+  width: var(--width);
+  height: calc(100vh - 78px - 130px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-top: 78px;
 `
 
 const Span = styled.span`
   color: #868686;
   font-weight: 400;
   font-size: 20px;
+  line-height: 23px;
   text-align: center;
 `
 

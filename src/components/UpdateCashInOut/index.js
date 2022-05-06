@@ -1,14 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-import React,{ useState,useContext } from 'react';
+import { useNavigate,useParams } from 'react-router-dom';
+import React,{ useState,useContext,useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
 import UserContext  from '../../contexts/UserContext';
 
-function CashOut (){
+function UpdateCashInOut (){
+
+  const {type,id} = useParams();
 
   const {userInfo} = useContext(UserContext);
-  const [statement, setStatement] = useState({description: '', value: '', type: 'O'});
+  const [statement, setStatement] = useState({description: '', value: '', type: type});
 
   const navigate = useNavigate();
 
@@ -18,6 +20,28 @@ function CashOut (){
     if(value === 'NaN') return  '';
     return value.replace(/([0-9]),([0-9]{2}$)/g, "$1,$2");
   }
+
+  useEffect(() => {
+
+    const URLBASE = 'http://localhost:5000'
+    const CONFIG =  { headers: { Token: userInfo.token } };
+    const promise = axios.get(`${URLBASE}/statement/${id}`, CONFIG);
+    
+    promise.then((promise) => {
+      
+      setStatement({
+        ...statement, 
+        value: validateNumber(promise.data.value.toFixed(2)),
+        description: promise.data.description
+       });
+    });
+
+    promise.catch((err)=>{
+      alert('Ocorreu um erro - código ' + err.response.status);
+      console.log(err)
+    });
+
+  } , userInfo);
 
   const sendData = (e) => {
 
@@ -31,10 +55,10 @@ function CashOut (){
       value: parseFloat(statement.value.replace(',','.'))
     };
 
-    const promise = axios.post(`${URLBASE}/statement`, BODY, CONFIG);
+    const promise = axios.put(`${URLBASE}/statement/${id}`, BODY, CONFIG);
     
     promise.then((promise) => {
-      alert('Registro salvo com sucesso!');
+      alert('Registro atualizado com sucesso!');
       navigate('/statements');
     });
 
@@ -48,18 +72,18 @@ function CashOut (){
   return(
 
     <Container>
-
-      <Header>Nova saída</Header>
+      
+      <Header>Editar {type === 'I' ? 'entrada' : 'saída'}</Header>
 
       <Form onSubmit={sendData}>
 
-        <Input type='text' placeholder='Valor' required value={statement.value} 
+        <Input type='text' maxLength={8} placeholder='Valor' required value={statement.value} 
           onChange={e => setStatement ({...statement, value: validateNumber(e.target.value) })} />
 
         <Input type='text' maxLength={26} placeholder='Descrição' required value={statement.description} 
           onChange={e => setStatement ({...statement, description: e.target.value })} />
 
-        <Button type='submit'>Salvar saída</Button>
+        <Button type='submit'>Atualizar {type === 'I' ? 'entrada' : 'saída'}</Button>
 
       </Form>
 
@@ -113,4 +137,4 @@ const Input = styled.input`
   margin-bottom: 13px;
 `
 
-export default CashOut;
+export default UpdateCashInOut;

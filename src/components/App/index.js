@@ -6,8 +6,10 @@ import UserContext from './../../contexts/UserContext';
 import SignIn     from './../SignIn';
 import SignUp     from './../SignUp';
 import Statements from './../Statements';
-import CashIn     from './../CashIn';
-import CashOut    from './../CashOut';
+import CashInOut     from './../CashInOut';
+import UpdateCashInOut     from './../UpdateCashInOut';
+
+
 
 function App(){ 
 
@@ -33,8 +35,8 @@ function App(){
           <Route path='/'           element={ <SignIn /> } />
           <Route path='/signup'     element={ <SignUp /> } /> 
           <Route path='/statements' element={ <Statements /> } />               
-          <Route path='/cashin'     element={ <CashIn /> } />  
-          <Route path='/cashout'    element={ <CashOut /> } />  
+          <Route path='/cashinout/:type' element={ <CashInOut /> } />  
+          <Route path='/cashinout/update/:type/:id' element={ <UpdateCashInOut /> } />  
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>
