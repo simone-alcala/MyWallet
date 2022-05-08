@@ -21,7 +21,7 @@ function Statement(props){
     if (!confirmation) return;
 
     const URLBASE = 'http://localhost:5000'
-    const CONFIG =  { headers: { Token: userInfo.token } };
+    const CONFIG =  { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
     const promise = axios.delete(`${URLBASE}/statement/${_id}`, CONFIG);
     
@@ -53,7 +53,7 @@ const Abbr = styled.abbr`
   text-decoration: none;
 `
 const Section = styled.section`
-  width: calc(var(--width)-2px);
+  width: 100%;
   height: 35px;
   display: flex;
   align-items: center;
@@ -92,15 +92,16 @@ const Value = styled.div`
   color: ${props => props.type==='I' ? '#03AC00' : '#C70000'};
 `
 const Icon = styled.div`
-  width: 20px;
+  
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: end;
   color: #C6C6C6;
   
   ion-icon{
     cursor: pointer;
+    text-align: right;
   }
 `;
 

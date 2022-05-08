@@ -31,7 +31,7 @@ function Statements(){
   useEffect(() => {
 
     const URLBASE = 'http://localhost:5000'
-    const CONFIG =  { headers: { Token: userInfo.token } };
+    const CONFIG =  { headers: { Authorization: `Bearer ${userInfo.token}` } };
     const promise = axios.get(`${URLBASE}/statement`, CONFIG);
     
     
@@ -70,8 +70,8 @@ function Statements(){
         <NoStatement> <Span>Não há registros de <br/> entrada ou saída</Span> </NoStatement> :
         <>
           <Section>
-            {statements.map(({_id, description, value, type, date}) =>
-            <Statement _id={_id} description={description} value={value} type={type} date={date} getIdDeleted={getIdDeleted}/> )}
+            {statements.map(({_id, description, value, type, date},index) =>
+            <Statement key={index} _id={_id} description={description} value={value} type={type} date={date} getIdDeleted={getIdDeleted}/> )}
           </Section>
           <Balance><strong>SALDO</strong>{balance.toFixed(2).replace('.', ',')}</Balance>
         </> 
@@ -137,7 +137,7 @@ const Section = styled.section`
   margin-top: 78px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 const Balance = styled.div`

@@ -24,7 +24,7 @@ function UpdateCashInOut (){
   useEffect(() => {
 
     const URLBASE = 'http://localhost:5000'
-    const CONFIG =  { headers: { Token: userInfo.token } };
+    const CONFIG =  { headers: { Authorization: `Bearer ${userInfo.token}` } };
     const promise = axios.get(`${URLBASE}/statement/${id}`, CONFIG);
     
     promise.then((promise) => {
@@ -41,14 +41,14 @@ function UpdateCashInOut (){
       console.log(err)
     });
 
-  } , userInfo);
+  } , [userInfo]);
 
   const sendData = (e) => {
 
     e.preventDefault();
 
     const URLBASE = 'http://localhost:5000'
-    const CONFIG =  { headers: { Token: userInfo.token } };
+    const CONFIG =  { headers: { Authorization: `Bearer ${userInfo.token}` } };
     const BODY = { 
       description: statement.description,
       type: statement.type,
