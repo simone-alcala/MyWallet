@@ -25,7 +25,7 @@ function CashInOut (){
 
     e.preventDefault();
 
-    const URLBASE = 'http://localhost:5000'
+    const URLBASE = 'https://projeto13-my-wallet.herokuapp.com'
     const CONFIG =  { headers: { Authorization: `Bearer ${userInfo.token}` } };
     const BODY = { 
       description: statement.description,

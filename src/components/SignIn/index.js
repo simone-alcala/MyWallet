@@ -14,7 +14,7 @@ function SignIn(){
 
   const signIn = (e) => {
     e.preventDefault();
-    const URL = 'http://localhost:5000/sign-in'
+    const URL = 'https://projeto13-my-wallet.herokuapp.com/sign-in'
     const promise = axios.post(URL, { email: user.email, password: user.password });
     
     promise.then((promise) => {

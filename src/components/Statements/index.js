@@ -30,7 +30,7 @@ function Statements(){
 
   useEffect(() => {
 
-    const URLBASE = 'http://localhost:5000'
+    const URLBASE = 'https://projeto13-my-wallet.herokuapp.com'
     const CONFIG =  { headers: { Authorization: `Bearer ${userInfo.token}` } };
     const promise = axios.get(`${URLBASE}/statement`, CONFIG);
     

@@ -17,7 +17,7 @@ function SignUp(){
       return;
     }
 
-    const URL = 'http://localhost:5000/sign-up'
+    const URL = 'https://projeto13-my-wallet.herokuapp.com/sign-up'
     const promise = axios.post(URL, { 
       name: user.name, 
       email: user.email, 
